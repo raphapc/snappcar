@@ -1,0 +1,65 @@
+<div class="search-car-city">
+  <div class="inputs">
+    <div>
+      <label>City Name:</label>
+      <input
+        matInput
+        placeholder="Search city"
+        [matAutocomplete]="auto"
+        [formControl]="cityCtrl"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <ng-container>
+          <mat-option *ngFor="let city of filteredCities" [value]="city.name">
+            <span>{{ city.name }}</span>
+          </mat-option>
+        </ng-container>
+      </mat-autocomplete>
+    </div>
+    <div>
+      <label for="distance">Max. distance:</label>
+      <select (change)="selectDistance(distance.value)" #distance>
+        <option
+          *ngFor="let distance of distanceOptions"
+          [value]="distance.value"
+        >
+          {{ distance.label }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <label for="sortOption">Sort by:</label>
+      <select (change)="selectSort(sortOption.value)" #sortOption>
+        <option *ngFor="let sortOption of sortOptions">
+          {{ sortOption | titlecase }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div *ngIf="carsCity.length > 0">
+    <table>
+      <thead>
+        <th>Car</th>
+        <th>Fuel Type</th>
+        <th>Body Type</th>
+        <th>Gear</th>
+        <th>Seats</th>
+        <th>Year</th>
+        <th>Price</th>
+        <th>Distance (m)</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let carCity of carsCity">
+          <td>{{ carCity.car.make }} - {{ carCity.car.model }}</td>
+          <td>{{ carCity.car.fuelType }}</td>
+          <td>{{ carCity.car.bodyType }}</td>
+          <td>{{ carCity.car.gear }}</td>
+          <td>{{ carCity.car.seats || "N/A" }}</td>
+          <td>{{ carCity.car.year }}</td>
+          <td>{{ carCity.priceInformation.price | currency: "EUR" }}</td>
+          <td>{{ carCity.distance | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
